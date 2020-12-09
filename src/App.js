@@ -37,7 +37,7 @@ function App() {
 
     return <TodoInput addTodo={addTodo} />
   }
-// 
+  
   function addTodo(todo) {
 
     let arr = [...todos,  {id: uuidv4(), isCompleted: false, todo: todo}]
