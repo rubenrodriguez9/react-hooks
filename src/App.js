@@ -1,68 +1,88 @@
-import  { useState } from 'react'
+import {useState} from 'react'
 import {v4 as uuidv4} from "uuid"
-import './App.css';
-import TodoInput from './TodoInput'
 import Todo from './Todo'
+import InputTodo from "./InputTodo"
 
-function App() {
+ function App() {
 
-  let initialTodoArray = [
+  let todoArray = [
     {
       id: uuidv4(),
-      todo: 'walk the cat',
-      isCompleted: false
+      todo: 'walk the walk',
+      isComplete: false
     },
     {
       id: uuidv4(),
-      todo: 'walk the dragon',
-      isCompleted: false
+      todo: 'walk the shirt',
+      isComplete: false
     },
     {
       id: uuidv4(),
-      todo: 'walk the dog',
-      isCompleted: false
+      todo: 'walk the skirt',
+      isComplete: false
     }
   ]
 
+  const [todos, setTodos] = useState(todoArray)
 
-  const [todos, setTodos] = useState(initialTodoArray)
 
-  function showAllTodos() {
+  function showAllTodos(){
     return todos.map((item) => {
-      return <Todo key={item.id} todoRay={item} removeTodo={removeTodo} />
+      return <Todo key={item.id} value={item.todo} todoRay={item} deleteTodo={deleteTodo} todoDonebyID={todoDonebyID} />
     })
   }
 
-  function showTodoInput() {
+  function addTodo(todo){
+    let arr = [...todoArray, {id: uuidv4(), isComplete: false, todo: todo} ]
+    setTodos(arr)
+  }
 
-    return <TodoInput addTodo={addTodo} />
+  function showInput() {
+    return <InputTodo addTodo={addTodo} />
+  }
+
+  function todoDonebyID(id){
+    console.log(id);
+    console.log(todos);
+    
+    let newTodoArray = [...todos]
+    newTodoArray.map((todo) => {
+      if(todo.id === id && todo.isComplete){
+        todo.isComplete = false;
+        return todo
+      }
+      if(todo.id === id && !todo.isComplete){
+        todo.isComplete = true;
+        return todo
+      }
+    })
+
+    console.log(newTodoArray);
+
+    setTodos(newTodoArray)
+
+
+  }
+
+  function deleteTodo(id) {
+
+    let arr = [...todos].filter((item) => {
+      if(id !== item.id){
+        return item
+      }
+    })
+    setTodos(arr)
   }
   
-  function addTodo(todo) {
-
-    let arr = [...todos,  {id: uuidv4(), isCompleted: false, todo: todo}]
-    setTodos(arr)
-
-  }
-
-  function removeTodo(id) {
-
-    let arr = todos.filter((item) => {
-      return item.id !== id
-    })
-
-    setTodos(arr)
 
 
-
-  }
 
   return (
-    <div className="App">
-      {showTodoInput()}
+    <div style={{textAlign: "center"}} >
       {showAllTodos()}
+      {showInput()}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

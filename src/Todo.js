@@ -1,16 +1,17 @@
 import React from 'react'
 
-const Todo = ({todoRay, removeTodo}) => {
+ function Todo({todoRay, deleteTodo, todoDonebyID, isComplete}) {
+
+    
+
     return (
-        <div>
+        <div style={{textDecoration: todoRay.isComplete ? "line-through": ""}} >
             {todoRay.todo}
-            <div>
-                <button>Done</button>
-                <button onClick={() => removeTodo(todoRay.id)} >Delete</button>
-            </div>
+            <button onClick={() => todoDonebyID(todoRay.id)} >Do</button>
+            <button onClick={() => deleteTodo(todoRay.id)} >Delete</button>
             <hr/>
         </div>
+
     )
 }
-
 export default Todo
