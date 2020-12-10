@@ -1,84 +1,93 @@
 import {useState} from 'react'
-import {v4 as uuidv4} from "uuid"
-import Todo from './Todo'
-import InputTodo from "./InputTodo"
+import {v4 as uuidv4} from 'uuid'
+import Todos from "./Todos"
+import InputTodo from './InputTodo'
+import {TodoInputContext} from './context/context'
 
- function App() {
 
-  let todoArray = [
+ const App = () => {
+
+  let originalTodos = [
     {
       id: uuidv4(),
-      todo: 'walk the walk',
+      todo: "walk the dog",
       isComplete: false
     },
     {
       id: uuidv4(),
-      todo: 'walk the shirt',
+      todo: "walk the dino",
       isComplete: false
     },
     {
       id: uuidv4(),
-      todo: 'walk the skirt',
+      todo: "walk the cat",
       isComplete: false
-    }
+    },
   ]
 
-  const [todos, setTodos] = useState(todoArray)
+
+const [todos, setTodos] = useState(originalTodos)
+
+function showAllTodos(){
+  return todos.map((item) => {
+    return <Todos key={item.id} todoRay={item} deleteTodo={deleteTodo} todoDone={todoDone} />
+  })
+}
+
+function deleteTodo(id) {
+  let arr = todos.filter((item) => {
+    return item.id !== id
+})
+
+setTodos(arr)
 
 
-  function showAllTodos(){
-    return todos.map((item) => {
-      return <Todo key={item.id} value={item.todo} todoRay={item} deleteTodo={deleteTodo} todoDonebyID={todoDonebyID} />
-    })
-  }
+}
+function showInput(){
 
-  function addTodo(todo){
-    let arr = [...todoArray, {id: uuidv4(), isComplete: false, todo: todo} ]
-    setTodos(arr)
-  }
+  return (
+    <TodoInputContext.Provider value={{addTodo}}>
+      <InputTodo />
+    </TodoInputContext.Provider>
+  )
 
-  function showInput() {
-    return <InputTodo addTodo={addTodo} />
-  }
-
-  function todoDonebyID(id){
-    console.log(id);
-    console.log(todos);
-    
-    let newTodoArray = [...todos]
-    newTodoArray.map((todo) => {
-      if(todo.id === id && todo.isComplete){
-        todo.isComplete = false;
-        return todo
-      }
-      if(todo.id === id && !todo.isComplete){
-        todo.isComplete = true;
-        return todo
-      }
-    })
-
-    console.log(newTodoArray);
-
-    setTodos(newTodoArray)
-
-
-  }
-
-  function deleteTodo(id) {
-
-    let arr = [...todos].filter((item) => {
-      if(id !== item.id){
-        return item
-      }
-    })
-    setTodos(arr)
-  }
   
+}
+function todoDone(id){
 
+  let arr = [...todos]
+  arr.map((item) => {
+    if(id === item.id && !item.isComplete){
+      item.isComplete = true
+      return item
+    }
+    
+    if(id === item.id && item.isComplete){
+      item.isComplete = false
+      return item
+    }
+
+   
+
+  })
+
+  setTodos(arr)
+
+}
+
+function addTodo(value) {
+
+  let arr = [...todos, {id:uuidv4(), isComplete: false, todo: value}]
+
+  setTodos(arr)
+
+
+}
 
 
   return (
-    <div style={{textAlign: "center"}} >
+    <div>
+      
       {showAllTodos()}
       {showInput()}
     </div>

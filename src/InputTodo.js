@@ -1,31 +1,28 @@
-import { useState } from 'react'
+import {useState, useContext} from 'react'
+import {TodoInputContext} from './context/context'
 
-import React from 'react'
+export default function InputTodo() {
 
- function InputTodo({addTodo}) {
+    const {addTodo} = useContext(TodoInputContext)
 
-    const  [todo, setTodo] = useState('')
+    const [value, setValue] = useState('')
 
-    function handleAddTodo(e) {
+    function handleAddTodo(e){
         e.preventDefault()
-
-        addTodo(todo)
-    }
-
-    function handleDeleteTodo(id){
+        
+        addTodo(value)
         
     }
 
     return (
-        <form onSubmit={handleAddTodo}>
-           <input 
-           type="text"
-           onChange={(e) => setTodo(e.target.value)}
-           value={todo}
-           /> 
-           <button>Submit</button>
+        <form onSubmit={handleAddTodo} >
+            <input 
+            type="text"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            />
+
+            <button  >Submit</button>
         </form>
     )
 }
- 
-export default InputTodo
